@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 // Lis.h
 #ifndef GUARD_LIS_H
 #define GUARD_LIS_H
@@ -11,23 +11,23 @@ public:
 	Node<T>* next;
 	Node<T>* prev;
 
-	// »ı¼ºÀÚ
-	Node() : value(0), next(0), prev(0) {}  // ÃÊ±âÈ­
-	Node(T t) : value(t), next(0), prev(0) {}  // °ªÀÌ ÀÖÀ¸¸é
+	// ìƒì„±ì
+	Node() : value(0), next(0), prev(0) {}  // ì´ˆê¸°í™”
+	Node(T t) : value(t), next(0), prev(0) {}  // ê°’ì´ ìˆìœ¼ë©´
 };
 
 template <class T> class Nodeltr {
 public:
-	Nodeltr& operator++(); // ÇÑ °³¾¿ Áõ°¡ ¿¬»êÀÚ
-	Nodeltr& operator--(); // °¨¼Ò ¿¬»êÀÚ
+	Nodeltr& operator++(); // í•œ ê°œì”© ì¦ê°€ ì—°ì‚°ì
+	Nodeltr& operator--(); // ê°ì†Œ ì—°ì‚°ì
 	Nodeltr opperator++(int);
 	Nodeltr operator--(int);
-	T& operator*() const { return node->value; } // Æ÷ÀÎÅÍ
+	T& operator*() const { return node->value; } // í¬ì¸í„°
 	bool operator!= (const Nodeltr& rhs) const {
 		return node != rhs.node;
 	}
 
-	//  »ı¼ºÀÚ
+	//  ìƒì„±ì
 	Nodeltr(Node<T>* n) : node(n) {}
 
 private:
@@ -62,38 +62,38 @@ public:
 	typedef const Nodeltr<T> const_iterator;
 	typedef size_t size_type;
 
-	// »ı¼ºÇÏ°í ÃÊ±âÈ­
+	// ìƒì„±í•˜ê³  ì´ˆê¸°í™”
 	Lis() : b(0), e(0), s(0) {}
 	explicit Lis(size_type n, const T& t = T()) { create(n, t); }
 	Lis(const Lis& v) { create(v.begin(), v.end()); }
-	Lis& operator=(const Lis&);  // ÇÒ´ç/Á¤ÀÇ ¿¬»êÀÚ
-	~Lis() { uncreate(); } // ¼Ò¸êÀÚ
+	Lis& operator=(const Lis&);  // í• ë‹¹/ì •ì˜ ì—°ì‚°ì
+	~Lis() { uncreate(); } // ì†Œë©¸ì
 
-	//¸â¹ö ÇÔ¼ö
+	//ë©¤ë²„ í•¨ìˆ˜
 	void push_back(const T& t);
 	size_type size() const { return s; }
 
-	// ¹İº¹ÀÚ ÇÔ¼ö
+	// ë°˜ë³µì í•¨ìˆ˜
 	iterator begin() { return b; }
 	const_iterator begin() const { return b; }
 
 	iterator end() { return e; }
 	const_iterator end() const { return e; }
 
-	// ¼Ò¸ê/ºó ¹è¿­ ÇÔ¼ö
+	// ì†Œë©¸/ë¹ˆ ë°°ì—´ í•¨ìˆ˜
 	voide clear() { uncreate(); }
 	bool empty() const { return s == 0; }
 
 private:
-	Node<T>* b; // ½ÃÀÛÀÇ Æ÷ÀÎÅÍ (begin)
-	Node<T>* e; // ³¡ÀÇ Æ÷ÀÎÅÍ (end)
+	Node<T>* b; // ì‹œì‘ì˜ í¬ì¸í„° (begin)
+	Node<T>* e; // ëì˜ í¬ì¸í„° (end)
 	size_type s;
 
-	// ¸Ş¸ğ¸® ÇÒ´çÇÏ°í Lis ¹è¿­ ÃÊ±âÈ­
+	// ë©”ëª¨ë¦¬ í• ë‹¹í•˜ê³  Lis ë°°ì—´ ì´ˆê¸°í™”
 	void create(size_type, const T&);
 	void create(const_iterator, const_iterator);  // create(b,e)
 
-	// Lis ¹è¿­ ¼Ò¸êÇÏ°í ¸Ş¸ğ¸® ÇØÁ¦
+	// Lis ë°°ì—´ ì†Œë©¸í•˜ê³  ë©”ëª¨ë¦¬ í•´ì œ
 	void uncreate();
 
 };
@@ -102,42 +102,42 @@ template <class T>
 void Lis<T>::push_back(const T& t) {
 	Node<T>* node = new Node<T>(t);  // t valude
 
-	if (s == 0) // ºó Lis °´Ã¼ÀÌ¸é
+	if (s == 0) // ë¹ˆ Lis ê°ì²´ì´ë©´
 		b = e = node;
 	else {
 		e->next = node;
 		node->prev = e;
 		e = node;
 	}
-	s++; // »çÀÌÁî Áõ°¡
+	s++; // ì‚¬ì´ì¦ˆ ì¦ê°€
 }
 
-// »çÀÌÁî + °ªÀÇ »ı¼ºÀÚ
+// ì‚¬ì´ì¦ˆ + ê°’ì˜ ìƒì„±ì
 template <class T>
 void Lis<T>::create(size_type s, const T& t) {
 	for(size_type i = 0; i < s; i++)
 		push_back(t);
 }
 
-// b¿Í e ¹İº¹ÀÚ¸¦ »ç¿ëÇÏ¿© »çº» ¸¸µå´Â create()
+// bì™€ e ë°˜ë³µìë¥¼ ì‚¬ìš©í•˜ì—¬ ì‚¬ë³¸ ë§Œë“œëŠ” create()
 template <class T>
 void Lis<T>::create(iterator b, iterator e) {
 	while (b != e)
 		push_back(*b++);
 }
 
-// ¼Ò¸ê
+// ì†Œë©¸
 template <class T>
 void Lis<T>::uncreate() {
 	Node<T>* node = e;
 
-	while (node != b) { // ¿ª¹æÇâÀ¸·Î »èÁ¦, ¼Ò¸ê, ¸Ş¸ğ¸® ÇØÁ¦
+	while (node != b) { // ì—­ë°©í–¥ìœ¼ë¡œ ì‚­ì œ, ì†Œë©¸, ë©”ëª¨ë¦¬ í•´ì œ
 		Node<T>* node_delete = node;
-		node = node->prev; // ÀÌÀü NodeÀ¸·Î °¡¸®Å´
-		delete node_delete; // Æ÷ÀÎÅÍ ¾ø´Â Node »èÁ¦
+		node = node->prev; // ì´ì „ Nodeìœ¼ë¡œ ê°€ë¦¬í‚´
+		delete node_delete; // í¬ì¸í„° ì—†ëŠ” Node ì‚­ì œ
 	}
 
-	// b¿¡ ÀÖÀ¸´Ï±î
+	// bì— ìˆìœ¼ë‹ˆê¹Œ
 	b = e = 0;
 	s = 0;
 }

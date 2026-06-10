@@ -6,18 +6,9 @@
 
 using namespace std;
 
-// 빈 생성자 
-Student_info::Student_info() : midterm(0), final(0) { }
-
-// cin을 읽어 Student_info를 초기화
-Student_info::Student_info(istream& is) { read(is); }
-
-bool compare(const Student_info& x, const Student_info& y) {
-    return x.getName() < y.getName(); // T / F (A-Z)
-}
-
-double Student_info::grade() const {
-    return ::grade(midterm, final, homework);
+// 생성자
+Student_info::Student_info(const Student_info& s) : cp(0) {
+    if (s.cp) cp = s.cp->clone();
 }
 
 // 입력 스트림에서 과제 점수를 읽어서 vector<double>에 넣음.
@@ -47,4 +38,32 @@ istream& Student_info::read(istream& in) {
     // 과제 점수를 일음
     read_hw(in, homework);
     return in;
+}
+
+istream& Student_info::read(istream& in) {
+    delete cp; // 이전 객체 있으면 삭제
+
+    char ch;
+    in >> ch;  // record 타입 입력
+
+    // record 타입 확인
+    if (ch == 'U') // 대학생
+        cp == new Core(in);
+    else  // 대학원생 (G) - "F" TOEIC
+        cp = new Grad(in);
+
+    return in;
+
+}
+
+// = 연산자 추가
+Student_info& Student_info::operator=(const Student_info& s) {
+    if (&s != this) {
+        delete cp;
+        if (s.cp)
+            cp = s.cp->clone();
+        else
+            cp = 0;
+    }
+    return *this;
 }

@@ -35,6 +35,10 @@ public:
 	explicit Vec(size_type n, const T& val = T()) { create(n, val); }
 	// 3. 사본 만드는 생성자
 	Vec(const Vec& v) { create(v.begin(), v.end()); };
+	// 4. Template 추가
+	template <class In> Vec(In b, In e) {
+		create(b, e);
+	}
 
 	// 벡터 크기와 인덱스에 관한 새로운 함수들
 	size_type size() const { return avail - data; }
@@ -50,6 +54,9 @@ public:
 	iterator end() { return avail; } 
 	const_iterator end() const { return avail; }
 
+	// isert & assign 추가 (연습문제 12 + 13)
+	template<class In> iterator insert(iterator, In, In);
+	voide assign(iterator, iterator);  // Q13 assign is = 할당/정의
 	// 인터페이스 = 미완성
 	void push_back(const T& val) {
 		if (avail == limit) // 필요하다면 저장 공간 확보
@@ -178,6 +185,44 @@ void Vec<T>::grow_once() {
 	data = new_data;
 	avail = new_avail;
 	limit = data + new_size;
+}
+
+// 12장 - 연습문제 12
+template <class T>
+template <class In>
+typename Vec<T>::iterator Vec<T>::insert(iterator d, In b, In e) {
+	// 끝 부분과 차이 저장
+	Vec<T> end(d, avail); // d부터 끝까지 다른 Vec에서 data 저장
+	ptrdiff_t diff = d - data;
+
+	// 끝 부분 소멸하기
+	if (d) {
+		// 역방향으로 d까지 요소를 제거/삭제하기
+		while (avail != d)
+			alloc.destroy(--avail);
+	}
+
+	// b부터 e까지 요소를 추가하기
+	while (b != e)
+		push_back(*b++);
+
+	// 다시 끝 부분 추가하기 (불러오기)
+	for (Vec<T>::const_iterator it = end.begin();
+		it != end.end(); ++it)
+		push_back(*it);
+
+	return data + diff;
+}
+
+// 12장 - 연습문제 13
+template <class T>
+void Vec<T>::assign(iterator b, iterator e) {
+	// Vec 소멸
+	uncreate();
+
+	// 모든 반복자의 요소를 추가하기
+	while ( b != e )
+
 }
 
 #endif
